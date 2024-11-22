@@ -4,19 +4,25 @@ import { ResponseModel } from "../models/response-model";
 import { PodcastsRepository } from "../repositories/podcasts-repository";
 
 export class PodcastsService {
-  private readonly podcastsRepository: PodcastsRepository
+  private readonly podcastsRepository: PodcastsRepository;
 
   constructor() {
     this.podcastsRepository = new PodcastsRepository();
   }
-  
-  async findMany(
-    name: string
-  ): Promise<ResponseModel<Podcast[]>> {
-    const data: Podcast[] = await this.podcastsRepository.findMany(name);
-  
-    const statusCode = data.length === 0 ? StatusCode.NO_CONTENT : StatusCode.OK;
-  
-    return { statusCode, data };
+
+  async findMany(name: string): Promise<ResponseModel<Podcast[] | string>> {
+    try {
+      const data: Podcast[] = await this.podcastsRepository.findMany(name);
+
+      const statusCode =
+        data.length === 0 ? StatusCode.NO_CONTENT : StatusCode.OK;
+
+      return { statusCode, data };
+    } catch (error) {
+      return {
+        statusCode: StatusCode.INTERNAL_SERVER_ERROR,
+        data: (error as Error).message,
+      };
+    }
   }
 }
