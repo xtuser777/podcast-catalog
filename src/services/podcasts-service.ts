@@ -25,4 +25,20 @@ export class PodcastsService {
       };
     }
   }
+
+  async findOne(id: string): Promise<ResponseModel<Podcast | null | string>> {
+    try {
+      const data: Podcast | null = await this.podcastsRepository.findOne(id);
+
+      const statusCode =
+        data ? StatusCode.OK : StatusCode.NOT_FOUND;
+
+      return { statusCode, data };
+    } catch (error) {
+      return {
+        statusCode: StatusCode.INTERNAL_SERVER_ERROR,
+        data: (error as Error).message,
+      };
+    }
+  }
 }
