@@ -1,3 +1,4 @@
+import path from "path";
 import { open, Database as DatabaseConnection } from "sqlite";
 import { Database as DatabaseDriver } from "sqlite3";
 
@@ -17,8 +18,9 @@ export class Database {
 
   async getConnection(): Promise<DatabaseConnection> {
     if (this.connection === null) {
+      const pathData = path.join(__dirname, "/podcasts.db");
       this.connection = await open({
-        filename: "/Users/lucas/github/podcast-catalog/src/data/podcasts.db",
+        filename: pathData,
         driver: DatabaseDriver,
       });
     }

@@ -1,8 +1,5 @@
-import path from "path";
 import { Podcast } from "../models/podcast";
 import { Database } from "../data/database";
-
-const pathData = path.join(__dirname, "/data/podcasts.db");
 
 export class PodcastsRepository {
   async findMany(name?: string): Promise<Podcast[]> {
